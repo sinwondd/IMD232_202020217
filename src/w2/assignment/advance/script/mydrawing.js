@@ -52,7 +52,7 @@ function draw() {
   rect(width / 5.45, height / 1.76, width / 30, height / 50);
   circle(width / 5, height * 0.51, width / 15);
 
-  fill('	#8B4513');
+  fill('#8B4513');
   rect(width / 1.6, height * 0.7, width / 40, height * 0.2, 10);
   rect(width / 1.04, height * 0.7, width / 40, height * 0.2, 10);
   fill('#BDB76B');
@@ -61,4 +61,12 @@ function draw() {
 
   fill('#F0E68C');
   rect(width / 1.635, height / 1.5, width / 2.6, height / 15, 20);
+
+  fill('#FF69B4');
+  translate(width / 5, height * 0.42, width / 15);
+  noStroke();
+  for (let i = 0; i < 10; i++) {
+    ellipse(0, 10, 10, 50);
+    rotate(PI / 5);
+  }
 }
