@@ -21,8 +21,8 @@ function draw() {
   line(width * 0.5, height * 0.7, width * 0.5, height * 0.3);
 
   noStroke();
-  fill('#FFF9EC');
-  circle(width / 2, height * 0.2, width * 0.076);
+  fill(255, 100);
+  circle(width / 2, height * 0.2, width * 0.13);
   stroke(150);
   strokeWeight(3);
   line(width / 2, height / 5, width / 2, 1);
