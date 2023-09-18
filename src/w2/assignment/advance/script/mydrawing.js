@@ -62,6 +62,25 @@ function draw() {
   fill('#F0E68C');
   rect(width / 1.635, height / 1.5, width / 2.6, height / 15, 20);
 
+  stroke('gold');
+  strokeWeight(10);
+  fill('#ADD8E6');
+  rect(width / 1.2, height / 4, width / 2.5, height / 5, 5);
+
+  noStroke();
+  fill('#87CEEB');
+  rect(width / 1.19, height / 2.82, width / 2, height / 12, 3);
+
+  stroke('Azure');
+  strokeWeight(30);
+  point(width / 1.12, height / 2.62, width / 2, height / 12);
+  strokeWeight(20);
+  point(width / 1.12, height / 3, width / 1.3, height / 1.3);
+  strokeWeight(35);
+  point(width / 1.04, height / 2.62, width / 2, height / 12);
+  strokeWeight(25);
+  point(width / 1.04, height / 3, width / 1.3, height / 1.3);
+
   fill('#FF69B4');
   translate(width / 5, height * 0.42, width / 15);
   noStroke();
