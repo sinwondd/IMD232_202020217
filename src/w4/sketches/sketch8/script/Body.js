@@ -1,18 +1,27 @@
-// Original Code from: https://editor.p5js.org/natureofcode/sketches/4IRI8BEVE
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/cmj37xPCM
 // Daniel Shiffman
 // The Nature of Code
-// Example 2-1: Forces
+// Example 2-8: Two-Body Attraction
 
 //Modified by OO-SUNG SON (spctrm404)
 
-class Mover {
-  constructor() {
-    this.mass = 1;
-    this.position = createVector(width / 2, 30);
+class Body {
+  constructor(x, y) {
+    this.position = createVector(x, y);
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
+    this.mass = 8;
+    this.radius = this.mass ** (1 / 2) * 4;
     this.velocityVisualization = createVector(0, 0);
     this.accelerationVisualization = createVector(0, 0);
+  }
+
+  attract(body) {
+    let force = p5.Vector.sub(this.position, body.position);
+    let distance = constrain(force.mag(), 5, 25);
+    let strength = (G * (this.mass * body.mass)) / distance ** 2;
+    force.setMag(strength);
+    return force;
   }
 
   applyForce(force) {
@@ -30,14 +39,14 @@ class Mover {
     this.accelerationVisualization.set(this.acceleration);
     this.accelerationVisualization.mult(100);
 
-    this.acceleration.mult(0);
+    this.acceleration.set(0, 0);
   }
 
   display() {
     stroke(0);
     strokeWeight(2);
     fill(127, 127);
-    ellipse(this.position.x, this.position.y, 48);
+    circle(this.position.x, this.position.y, this.radius * 2);
   }
 
   displayVectors() {
@@ -56,25 +65,5 @@ class Mover {
       this.position.x + this.accelerationVisualization.x,
       this.position.y + this.accelerationVisualization.y
     );
-  }
-
-  checkEdges() {
-    if (this.position.x > width - 1) {
-      this.position.x -= width - 1;
-      this.position.x *= -1;
-      this.position.x += width - 1;
-      this.velocity.x *= -1;
-    } else if (this.position.x < 0) {
-      this.position.x -= 0;
-      this.position.x *= -1;
-      this.position.x += 0;
-      this.velocity.x *= -1;
-    }
-    if (this.position.y > height - 1) {
-      this.position.y -= height - 1;
-      this.position.y *= -1;
-      this.position.y += height - 1;
-      this.velocity.y *= -1;
-    }
   }
 }

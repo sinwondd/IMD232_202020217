@@ -1,15 +1,16 @@
-// Original Code from: https://editor.p5js.org/natureofcode/sketches/4IRI8BEVE
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/LSXJ6-VziJ
 // Daniel Shiffman
 // The Nature of Code
-// Example 2-1: Forces
+// Example 2-7: Attraction with Many Movers
 
 //Modified by OO-SUNG SON (spctrm404)
 
 class Mover {
-  constructor() {
-    this.mass = 1;
-    this.position = createVector(width / 2, 30);
-    this.velocity = createVector(0, 0);
+  constructor(x, y, mass) {
+    this.mass = mass;
+    this.radius = mass ** (1 / 2) * 8;
+    this.position = createVector(x, y);
+    this.velocity = createVector(1, 0);
     this.acceleration = createVector(0, 0);
     this.velocityVisualization = createVector(0, 0);
     this.accelerationVisualization = createVector(0, 0);
@@ -37,7 +38,7 @@ class Mover {
     stroke(0);
     strokeWeight(2);
     fill(127, 127);
-    ellipse(this.position.x, this.position.y, 48);
+    circle(this.position.x, this.position.y, this.radius * 2);
   }
 
   displayVectors() {
@@ -56,25 +57,5 @@ class Mover {
       this.position.x + this.accelerationVisualization.x,
       this.position.y + this.accelerationVisualization.y
     );
-  }
-
-  checkEdges() {
-    if (this.position.x > width - 1) {
-      this.position.x -= width - 1;
-      this.position.x *= -1;
-      this.position.x += width - 1;
-      this.velocity.x *= -1;
-    } else if (this.position.x < 0) {
-      this.position.x -= 0;
-      this.position.x *= -1;
-      this.position.x += 0;
-      this.velocity.x *= -1;
-    }
-    if (this.position.y > height - 1) {
-      this.position.y -= height - 1;
-      this.position.y *= -1;
-      this.position.y += height - 1;
-      this.velocity.y *= -1;
-    }
   }
 }

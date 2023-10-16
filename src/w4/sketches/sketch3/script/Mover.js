@@ -1,45 +1,80 @@
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/0RiwMFOQ7
+// Daniel Shiffman
+// The Nature of Code
+// Example 2-3: Gravity Scaled by Mass
+
+//Modified by OO-SUNG SON (spctrm404)
+
 class Mover {
-  constructor(x, y, mass) {
-    this.pos = createVector(x, y);
-    this.vel = createVector(0, 0);
-    this.acc = createVector(0, 0.5);
-    this.radius = radius;
-    this.mass = radius ** (1 / 2);
+  constructor(x, y, m) {
+    this.mass = m;
+    this.position = createVector(x, y);
+    this.velocity = createVector(0, 0);
+    this.acceleration = createVector(0, 0);
+    this.velocityVisualization = createVector(0, 0);
+    this.accelerationVisualization = createVector(0, 0);
   }
-}
 
-applyForce(force) {
-    // force.div(this.mass);
-    let divedForce = p5.Vector.div(force, this.mass);
-    this.acc.add(divedForce);
-}
+  applyForce(force) {
+    let forceDividedByMass = p5.Vector.div(force, this.mass);
+    this.acceleration.add(forceDividedByMass);
+  }
 
-update() {
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-    this.acc.mult(0);
- }
+  update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
 
-edgeBounce() {
-    if (this.pos < 0 + this.radius) {
-        let delita = this.pos.x - (0 + this.radius);
-        this.pos.x += -2 * delita;
-        this.vel.x *= -1;
-    } else if (this.pos.x > width - 1-this.radius) {
-        let delita = this.pos.x - (width - 1 - this.radius);
-        this.pos.x += 2 * delita;
-        this.vel.x *= -1;
+    this.velocityVisualization.set(this.velocity);
+    this.velocityVisualization.mult(10);
 
-    
-    if (this.pos.y>height - 1 -this.radius){
-        let delita = this.pos.y - (height -1- this.radius);
-        this.pos.y +=  2 *delita;
-        this.vel.y *= -1 ;
+    this.accelerationVisualization.set(this.acceleration);
+    this.accelerationVisualization.mult(100);
+
+    this.acceleration.mult(0);
+  }
+
+  display() {
+    stroke(0);
+    strokeWeight(2);
+    fill(127, 127);
+    circle(this.position.x, this.position.y, 2 * this.mass ** (1 / 2) * 8);
+  }
+
+  displayVectors() {
+    noFill();
+    stroke('red');
+    line(
+      this.position.x,
+      this.position.y,
+      this.position.x + this.velocityVisualization.x,
+      this.position.y + this.velocityVisualization.y
+    );
+    stroke('blue');
+    line(
+      this.position.x,
+      this.position.y,
+      this.position.x + this.accelerationVisualization.x,
+      this.position.y + this.accelerationVisualization.y
+    );
+  }
+
+  checkEdges() {
+    if (this.position.x > width - 1) {
+      this.position.x -= width - 1;
+      this.position.x *= -1;
+      this.position.x += width - 1;
+      this.velocity.x *= -1;
+    } else if (this.position.x < 0) {
+      this.position.x -= 0;
+      this.position.x *= -1;
+      this.position.x += 0;
+      this.velocity.x *= -1;
+    }
+    if (this.position.y > height - 1) {
+      this.position.y -= height - 1;
+      this.position.y *= -1;
+      this.position.y += height - 1;
+      this.velocity.y *= -1;
     }
   }
 }
- 
-
- display () {
-    ellipse(this.pos.x, pos.y, 2 * this.radiius);
- }

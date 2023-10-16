@@ -1,14 +1,15 @@
-// Original Code from: https://editor.p5js.org/natureofcode/sketches/4IRI8BEVE
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/I4wC4aXd-E
 // Daniel Shiffman
 // The Nature of Code
-// Example 2-1: Forces
+// Example 2-4: Including Friction
 
 //Modified by OO-SUNG SON (spctrm404)
 
 class Mover {
-  constructor() {
-    this.mass = 1;
-    this.position = createVector(width / 2, 30);
+  constructor(x, y, m) {
+    this.mass = m;
+    this.radius = m ** (1 / 2) * 8;
+    this.position = createVector(x, y);
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
     this.velocityVisualization = createVector(0, 0);
@@ -37,7 +38,7 @@ class Mover {
     stroke(0);
     strokeWeight(2);
     fill(127, 127);
-    ellipse(this.position.x, this.position.y, 48);
+    ellipse(this.position.x, this.position.y, 2 * this.radius);
   }
 
   displayVectors() {
@@ -58,23 +59,28 @@ class Mover {
     );
   }
 
-  checkEdges() {
-    if (this.position.x > width - 1) {
-      this.position.x -= width - 1;
+  contactEdge() {
+    return this.position.y >= height - this.radius;
+  }
+
+  bounceEdges() {
+    let bounce = -0.5;
+    if (this.position.x > width - 1 - this.radius) {
+      this.position.x -= width - 1 - this.radius;
       this.position.x *= -1;
-      this.position.x += width - 1;
-      this.velocity.x *= -1;
-    } else if (this.position.x < 0) {
-      this.position.x -= 0;
+      this.position.x += width - 1 - this.radius;
+      this.velocity.x *= bounce;
+    } else if (this.position.x < this.radius) {
+      this.position.x -= 0 + this.radius;
       this.position.x *= -1;
-      this.position.x += 0;
-      this.velocity.x *= -1;
+      this.position.x += 0 + this.radius;
+      this.velocity.x *= bounce;
     }
-    if (this.position.y > height - 1) {
-      this.position.y -= height - 1;
+    if (this.position.y > height - 1 - this.radius) {
+      this.position.y -= height - 1 - this.radius;
       this.position.y *= -1;
-      this.position.y += height - 1;
-      this.velocity.y *= -1;
+      this.position.y += height - 1 - this.radius;
+      this.velocity.y *= bounce;
     }
   }
 }

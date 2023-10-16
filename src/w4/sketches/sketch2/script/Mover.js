@@ -1,14 +1,14 @@
-// Original Code from: https://editor.p5js.org/natureofcode/sketches/4IRI8BEVE
+// Original Code from: https://editor.p5js.org/natureofcode/sketches/ePLfo-OGu
 // Daniel Shiffman
 // The Nature of Code
-// Example 2-1: Forces
+// Example 2-2: Forces Acting on Two Objects
 
 //Modified by OO-SUNG SON (spctrm404)
 
 class Mover {
-  constructor() {
-    this.mass = 1;
-    this.position = createVector(width / 2, 30);
+  constructor(x, y, m) {
+    this.mass = m;
+    this.position = createVector(x, y);
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
     this.velocityVisualization = createVector(0, 0);
@@ -37,7 +37,7 @@ class Mover {
     stroke(0);
     strokeWeight(2);
     fill(127, 127);
-    ellipse(this.position.x, this.position.y, 48);
+    circle(this.position.x, this.position.y, 2 * this.mass ** (1 / 2) * 8);
   }
 
   displayVectors() {

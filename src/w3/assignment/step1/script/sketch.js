@@ -52,12 +52,14 @@ function myBall() {
 }
 
 function display() {
+  vel.limit(3);
+
   strokeWeight(2);
   stroke('red');
   line(pos.x, pos.y, pos.x + acc.x * 100, pos.y + acc.y * 100);
 
   strokeWeight(2);
-  stroke('blue');
+  stroke('yellow');
   line(pos.x, pos.y, pos.x + vel.x * 20, pos.y + vel.y * 20);
 
   strokeWeight(2);
