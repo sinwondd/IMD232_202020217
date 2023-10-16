@@ -1,11 +1,11 @@
 const bodies = [];
-const bodyNum = 30;
 const G = 1;
+const bodyNum = 30;
 
 function setup() {
   setCanvasContainer('canvas', 1, 1, true);
   init();
-  background(255);
+  background(blue);
 }
 
 function draw() {
