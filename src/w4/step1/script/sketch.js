@@ -10,8 +10,8 @@ function setup() {
 function draw() {
   background(255);
 
-  for (let i = 0; i < bodies.length; i++) {
-    for (let j = 0; j < bodies.length; j++) {
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
       if (i !== j) {
         let forceForJ = bodies[i].attract(bodies[j]);
         bodies[j].applyForce(forceForJ);
