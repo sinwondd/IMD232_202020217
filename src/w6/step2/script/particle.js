@@ -1,35 +1,42 @@
 class Particle {
-  constructor(x, y) {
-    this.position = createVector(x, y);
-    let angle = random(TWO_PI);
-    let speed = random(5, 10);
-    this.velocity = p5.Vector.fromAngle(angle).mult(speed);
-    this.acceleration = createVector(0, 0.1);
-    this.radius = 10;
+  constructor(x, y, rad, color) {
+    this.pos = createVector(x, y);
+    this.velocity = createVector(random(19, 20), 0);
+    this.acc = createVector(0, 0.1);
+    this.mass = 1;
+    this.rad = 10;
+    this.color = color;
+    this.angle = 0;
+    this.angleVel = radians(random(-5, 5));
+    this.angleAcc = radians(random(-0.05, 0.05));
     this.lifespan = 60;
-    this.color = color(random(360), 100, 100, (this.lifespan * 100) / 60);
+  }
+
+  applyForce(force) {
+    let calcedAcc = p5.Vector.div(force, this.mass);
+    this.acc.add(calcedAcc);
   }
 
   update() {
-    this.velocity.add(this.acceleration);
-    this.position.add(this.velocity);
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.angleVel += this.angleAcc;
+    this.angle += this.angleVel;
     this.lifespan -= 1;
-
-    this.color = color(
-      hue(this.color),
-      saturation(this.color),
-      lightness(this.color),
-      (this.lifespan * 100) / 60
-    );
   }
 
   display() {
-    noStroke();
+    push();
+    translate(this.pos.x, this.pos.y);
+    rotate(this.angle);
     fill(this.color);
-    ellipse(this.position.x, this.position.y, this.radius * 2);
-  }
+    noStroke();
+    ellipse(0, 0, this.rad);
 
+    pop();
+  }
   isDead() {
-    return this.lifespan <= 0 || this.position.y > height;
+    return this.lifespan <= 0;
   }
 }

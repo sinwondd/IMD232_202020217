@@ -1,27 +1,34 @@
 class Emitter {
-  constructor() {
-    this.position = createVector(0, 0);
+  constructor(x, y) {
+    this.particles = [];
+    this.pos = createVector(x, y);
   }
 
-  setPosition(x, y) {
-    this.position.set(x, y);
+  addParticle() {
+    this.particles.push(
+      new Particle(this.pos.x, this.pos.y, random(1, 16), random(180, 300))
+    );
   }
 
-  emitParticles(count, angle = undefined) {
-    for (let i = 0; i < count; i++) {
-      let p = new Particle(this.position.x, this.position.y);
-      if (angle !== undefined) {
-        p.velocity.rotate(radians(angle));
-      }
-      particles.push(p);
-    }
+  applyForce(force) {
+    this.particles.forEach((eachParticle) => {
+      eachParticle.applyForce(force);
+    });
   }
 
   update() {
-    // Emitter 업데이트 로직
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      this.particles[i].update();
+      this.particles[i].display();
+      if (this.particles[i].isDead()) {
+        this.particles.splice(i, 1);
+      }
+    }
   }
 
   display() {
-    // Emitter 디스플레이 로직
+    this.particles.forEach((eachParticle) => {
+      eachParticle.display();
+    });
   }
 }

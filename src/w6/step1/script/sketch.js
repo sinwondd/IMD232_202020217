@@ -1,34 +1,22 @@
 let particles = [];
-let particleSpeed = 1.5;
+let gravity;
 
 function setup() {
   setCanvasContainer('canvas', 2, 1, true);
   rectMode(CENTER);
   colorMode(HSL, 360, 100, 100, 100);
+  gravity = createVector(0, 0.01);
+  background(0, 100, 100);
 }
 
 function draw() {
-  background(255);
-  noStroke(0);
-
-  // Generate particles at the top of the canvas
-  if (frameCount % 10 === 0) {
-    let x = random(width);
-    let y = -10;
-    let particleColor = color(random(0), random(100), random(255)); // Random color
-    let particle = new Particle(x, y, particleSpeed, particleColor);
-    particles.push(particle);
+  background(0, 100, 100);
+  particles.push(new Particle(width / 2, 0, 8, color(random(360), 100, 50)));
+  for (let idx = particles.length - 1; idx >= 0; idx--) {
+    let scaledGravity = p5.Vector.mult(gravity, particles[idx].mass);
+    particles[idx].applyForce(scaledGravity);
+    particles[idx].update();
+    particles[idx].display();
   }
-
-  for (let i = particles.length - 1; i >= 0; i--) {
-    let particle = particles[i];
-    particle.update();
-    particle.display();
-
-    if (particle.OffScreen()) {
-      particles.splice(i, 1);
-    }
-  }
-
   console.log('Number of particles: ' + particles.length);
 }
