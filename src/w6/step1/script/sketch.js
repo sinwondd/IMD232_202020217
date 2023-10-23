@@ -11,6 +11,7 @@ function draw() {
   background(255);
   noStroke(0);
 
+  // Generate particles at the top of the canvas
   if (frameCount % 10 === 0) {
     let x = random(width);
     let y = -10;

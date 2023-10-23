@@ -4,16 +4,16 @@ class Particle {
     this.y = y;
     this.pos = createVector(x, y);
     this.vel = createVector(1, 0);
-    this.vel.rotate((TAU / 360) * random(-150, -30));
     this.speed = speed;
     this.size = 15;
     this.color = color;
-
-    this.rotationSpeed = random(-10, 100);
+    this.rotationSpeed = random(-0.5, 5);
   }
 
   applyForce(force) {
-    this.velocity.add(force);
+    this.particles.forEach((eachParticle) => {
+      eachParticle.applyForce(force);
+    });
   }
 
   update() {
@@ -24,9 +24,10 @@ class Particle {
   }
 
   display() {
+    noStroke();
     fill(this.color);
     push();
-    translate(this.x, this.y);
+    translate(this.pos.x, this.y);
     rotate(this.vel.heading());
     rect(0, 0, this.size, this.size);
     pop();
