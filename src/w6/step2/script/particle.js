@@ -9,7 +9,7 @@ class Particle {
     this.angle = 0;
     this.angleVel = radians(random(-5, 5));
     this.angleAcc = radians(random(-0.05, 0.05));
-    this.lifespan = 60;
+    this.lifeSpan = 60;
   }
 
   applyForce(force) {
@@ -23,20 +23,21 @@ class Particle {
     this.acc.mult(0);
     this.angleVel += this.angleAcc;
     this.angle += this.angleVel;
-    this.lifespan -= 1;
+    this.lifeSpan -= 1;
   }
 
   display() {
     push();
     translate(this.pos.x, this.pos.y);
     rotate(this.angle);
-    fill(this.color);
-    noStroke();
+    fill(this.color, this.lifeSpan);
+    noStroke(0, this.lifeSpan);
     ellipse(0, 0, this.rad);
 
     pop();
   }
+
   isDead() {
-    return this.lifespan <= 0;
+    return this.lifeSpan <= 0;
   }
 }

@@ -5,7 +5,7 @@ function setup() {
   setCanvasContainer('canvas', 2, 1, true);
   rectMode(CENTER);
   colorMode(HSL, 360, 100, 100, 100);
-  gravity = createVector(0, 0.01);
+  gravity = createVector(0, 0.025);
   background(0, 100, 100);
 }
 
@@ -18,6 +18,7 @@ function draw() {
     particles[idx].update();
     particles[idx].display();
   }
+
   console.log('Number of particles: ' + particles.length);
 }
 

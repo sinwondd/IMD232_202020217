@@ -17,11 +17,11 @@ class Emitter {
   }
 
   update() {
-    for (let i = this.particles.length - 1; i >= 0; i--) {
+    for (let a = particles.length - 1; a >= 0; a--) {
       this.particles[i].update();
       this.particles[i].display();
-      if (this.particles[i].isDead()) {
-        this.particles.splice(i, 1);
+      if (particles[a].isDead()) {
+        particles.splice(a, 1);
       }
     }
   }
