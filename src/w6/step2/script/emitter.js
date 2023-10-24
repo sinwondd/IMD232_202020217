@@ -1,8 +1,13 @@
 class Emitter {
   constructor() {
     this.pos = createVector(0, 0);
+    this.particles = [];
   }
-
+  applyForce(force) {
+    this.particles.forEach((eachParticle) => {
+      eachParticle.applyForce(force);
+    });
+  }
   emit(x, y) {
     for (let i = 0; i < 100; i++) {
       let p = new Particle(x, y, color(random(360), 100, 50));
@@ -25,9 +30,10 @@ class Emitter {
       }
     }
   }
+
   display() {
-    for (let i = particles.length - 1; i >= 0; i--) {
-      particles[i].display();
-    }
+    this.particles.forEach((eachParticle) => {
+      eachParticle.display();
+    });
   }
 }

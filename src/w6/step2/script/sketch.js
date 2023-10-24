@@ -12,15 +12,13 @@ function setup() {
 }
 
 function draw() {
-  if (particles.length > 0) {
-    for (let i = particles.length - 1; i >= 0; i--) {
-      let particle = particles[i];
-      particle.applyForce(gravity);
-      particle.update();
-      particle.display();
-      if (particle.isDead()) {
-        particles.splice(i, 1);
-      }
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let particle = particles[i];
+    particle.applyForce(gravity);
+    particle.update();
+    particle.display();
+    if (particle.isDead()) {
+      particles.splice(i, 1);
     }
   }
 
