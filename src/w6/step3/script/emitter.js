@@ -1,25 +1,19 @@
 class Emitter {
-  constructor(x, y) {
+  constructor() {
     this.particles = [];
-    this.pos = createVector(x, y);
   }
 
-  emit() {
-    this.particles.push(
-      new Particle(width / 2, 8, color(random(360), 100, 50))
-    );
-  }
-
-  applyForce(force) {
-    this.particles.forEach((particle) => {
-      eachParticle.applyForce(force);
-    });
+  emit(x, y) {
+    for (let i = 0; i < 100; i++) {
+      let p = new Particle(x, y, color(random(360), 100, 50));
+      this.particles.push(p);
+    }
   }
 
   update() {
     for (let i = this.particles.length - 1; i >= 0; i--) {
-      particles[i].applyForce(gravity);
-      particles[i].update();
+      this.particles[i].applyForce(gravity);
+      this.particles[i].update();
       if (this.particles[i].isDead()) {
         this.particles.splice(i, 1);
       }
@@ -27,8 +21,8 @@ class Emitter {
   }
 
   display() {
-    this.particles.forEach((eachParticle) => {
-      eachParticle.display();
-    });
+    for (let particle of this.particles) {
+      particle.display();
+    }
   }
 }
