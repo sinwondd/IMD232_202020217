@@ -7,8 +7,8 @@ function setup() {
   rectMode(CENTER);
   colorMode(HSL, 360, 100, 100, 100);
   emitter = new Emitter(width / 2, height / 2);
-  gravity = createVector(0, 0.01);
-  background(0, 100, 100);
+  gravity = createVector(0, 0.1);
+  background(0, 0, 100);
 }
 
 function draw() {
@@ -33,10 +33,10 @@ function mouseClicked() {
   for (let i = 0; i < 100; i++) {
     let p = new Particle(mouseX, mouseY, color(random(360), 100, 50));
 
-    let angle = (TWO_PI / -10) * i;
+    let angle = (TWO_PI / 100) * i;
     let speed = random(5, 10);
     p.velocity = createVector(cos(angle) * speed, sin(angle) * speed);
-
+    p.mass = 10;
     particles.push(p);
   }
 }

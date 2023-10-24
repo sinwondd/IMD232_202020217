@@ -2,7 +2,7 @@ class Particle {
   constructor(x, y, color) {
     this.pos = createVector(x, y);
     this.velocity = createVector(random(19, 20), 0);
-    this.acc = createVector(0, 0);
+    this.acc = createVector(0, 0.01);
     this.mass = 10;
     this.rad = 8;
     this.color = color;
@@ -24,6 +24,7 @@ class Particle {
     this.angleVel += this.angleAcc;
     this.angle += this.angleVel;
     this.lifeSpan -= 1;
+    // Gradually reduce the alpha (transparency) as the particle ages
     this.color.setAlpha(map(this.lifeSpan, 0, 60, 0, 100));
   }
 
@@ -31,10 +32,9 @@ class Particle {
     push();
     translate(this.pos.x, this.pos.y);
     rotate(this.angle);
-    fill(this.color, this.lifeSpan);
-    noStroke(0, this.lifeSpan);
+    fill(this.color);
+    noStroke();
     ellipse(0, 0, this.rad * 2);
-
     pop();
   }
 
