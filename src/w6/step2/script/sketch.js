@@ -33,7 +33,7 @@ function mouseClicked() {
   for (let i = 0; i < 100; i++) {
     let p = new Particle(mouseX, mouseY, color(random(360), 100, 50));
 
-    let angle = (TWO_PI / -10) * i;
+    let angle = (TWO_PI / -20) * i;
     let speed = random(5, 10);
     p.velocity = createVector(cos(angle) * speed, sin(angle) * speed);
 
