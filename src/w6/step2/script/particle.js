@@ -1,10 +1,10 @@
 class Particle {
   constructor(x, y, color) {
     this.pos = createVector(x, y);
-    this.velocity = createVector(0, 0);
+    this.velocity = createVector(random(19, 20), 0);
     this.acc = createVector(0, 0);
     this.mass = 1;
-    this.rad = 10;
+    this.rad = 5;
     this.color = color;
     this.angle = 0;
     this.angleVel = radians(random(-5, 5));
