@@ -1,12 +1,14 @@
 class Particle {
-  constructor(x, y, color) {
+  constructor(x, y, color, lifeSpan) {
     this.pos = createVector(x, y);
     this.velocity = createVector(random(19, 20), 0);
-
-    this.acc = createVector(0, 0);
+    this.acc = createVector(0, 0.01);
     this.mass = 10;
     this.rad = 8;
     this.color = color;
+    this.angle = 0;
+    this.angleVel = radians(random(-5, 5));
+    this.angleAcc = radians(random(-0.05, 0.05));
     this.lifeSpan = 60;
   }
 
@@ -19,8 +21,8 @@ class Particle {
     this.velocity.add(this.acc);
     this.pos.add(this.velocity);
     this.acc.mult(0);
-    // this.angleVel += this.angleAcc;
-    // this.angle += this.angleVel;
+    this.angleVel += this.angleAcc;
+    this.angle += this.angleVel;
     this.lifeSpan -= 1;
   }
 

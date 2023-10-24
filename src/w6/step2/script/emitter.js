@@ -1,24 +1,16 @@
 class Emitter {
-  constructor() {
-    this.pos = createVector(0, 0);
+  constructor(x, y) {
+    this.pos = createVector(x, y);
     this.particles = [];
+  }
+
+  emit(x, y) {
+    this.particles.push(particles.push(new Particle(this.pos.x, this.pos.y)));
   }
   applyForce(force) {
     this.particles.forEach((eachParticle) => {
       eachParticle.applyForce(force);
     });
-  }
-  emit(x, y) {
-    for (let i = 0; i < 100; i++) {
-      let p = new Particle(x, y, color(random(360), 100, 50));
-      p.radius = 10;
-      p.lifespan = 60;
-      let angle = (TWO_PI / 100) * i;
-      let speed = random(5, 10);
-      p.velocity = createVector(cos(angle) * speed, sin(angle) * speed);
-      p.mass = 10;
-      particles.push(p);
-    }
   }
 
   update() {
