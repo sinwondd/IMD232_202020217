@@ -5,10 +5,10 @@ let emitter;
 function setup() {
   setCanvasContainer('canvas', 2, 1, true);
   rectMode(CENTER);
+  emitter = new Emitter(width / 2, height / 2);
   colorMode(HSL, 360, 100, 100, 100);
   gravity = createVector(0, 0.1);
   background(0, 100, 100);
-  emitter = new Emitter(width / 2, height / 2);
 }
 
 function draw() {
@@ -25,6 +25,8 @@ function draw() {
 
   emitter.update();
   emitter.display();
+
+  console.log('particles: ' + particles.length);
 }
 
 function mouseClicked() {
