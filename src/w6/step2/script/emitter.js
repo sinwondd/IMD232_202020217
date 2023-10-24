@@ -7,9 +7,10 @@ class Emitter {
   emit(x, y) {
     this.particles.push(particles.push(new Particle(this.pos.x, this.pos.y)));
   }
+
   applyForce(force) {
-    this.particles.forEach((eachParticle) => {
-      eachParticle.applyForce(force);
+    this.particles.forEach((particle) => {
+      particle.applyForce(force);
     });
   }
 

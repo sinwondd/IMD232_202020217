@@ -1,8 +1,8 @@
 class Particle {
-  constructor(x, y, color, lifeSpan) {
+  constructor(x, y, color) {
     this.pos = createVector(x, y);
     this.velocity = createVector(random(19, 20), 0);
-    this.acc = createVector(0, 0.01);
+    this.acc = createVector(0, 0);
     this.mass = 10;
     this.rad = 8;
     this.color = color;
