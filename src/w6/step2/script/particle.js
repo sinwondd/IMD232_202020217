@@ -1,8 +1,8 @@
 class Particle {
-  constructor(x, y, rad, color) {
+  constructor(x, y, color) {
     this.pos = createVector(x, y);
-    this.velocity = createVector(random(19, 20), 0);
-    this.acc = createVector(0, 0.1);
+    this.velocity = createVector(0, 0);
+    this.acc = createVector(0, 0);
     this.mass = 1;
     this.rad = 10;
     this.color = color;
@@ -18,8 +18,8 @@ class Particle {
   }
 
   update() {
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
+    this.velocity.add(this.acc);
+    this.pos.add(this.velocity);
     this.acc.mult(0);
     this.angleVel += this.angleAcc;
     this.angle += this.angleVel;
@@ -32,7 +32,7 @@ class Particle {
     rotate(this.angle);
     fill(this.color, this.lifeSpan);
     noStroke(0, this.lifeSpan);
-    ellipse(0, 0, this.rad);
+    ellipse(0, 0, this.rad * 2);
 
     pop();
   }
