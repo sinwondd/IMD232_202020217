@@ -1,38 +1,35 @@
 class Particle {
-  constructor(x, y) {
+  constructor(x, y, mass, lifeSpan) {
     this.pos = createVector(x, y);
     this.vel = createVector(1, 0);
-    this.vel.rotate((TAU / 360) * random(-180, 0));
+    this.vel.rotate((TAU / 360) * random(-150, -30));
     this.acc = createVector(0, 0);
-    this.lifespan = 255.0;
+    this.mass = mass;
+    this.rad = this.mass ** 0.5 * 5;
+    this.lifeSpan = lifeSpan;
+    this.life = this.lifeSpan;
   }
 
-  run() {
-    let gravity = createVector(0, 0.05);
-    this.applyForce(gravity);
-    this.update();
-    this.display();
+  applyForce(force) {
+    const acc = p5.Vector.div(force, this.mass);
+    this.acc.add(acc);
   }
 
   update() {
     this.vel.add(this.acc);
     this.pos.add(this.vel);
-    this.lifespan -= 2.0;
     this.acc.mult(0);
+    this.life--;
   }
 
   display() {
-    stroke(0, this.lifespan);
-    strokeWeight(2);
-    fill(127, this.lifespan);
-    circle(this.pos.x, this.pos.y, 8);
-  }
-
-  applyForce(force) {
-    this.acc.add(force);
+    const normalizedLife = constrain(this.life / this.lifeSpan, 0, 1);
+    stroke(0, 255 * normalizedLife);
+    fill(127, 255 * normalizedLife);
+    ellipse(this.pos.x, this.pos.y, this.rad * 2);
   }
 
   isDead() {
-    return this.lifespan < 0.0;
+    return this.life < 0;
   }
 }

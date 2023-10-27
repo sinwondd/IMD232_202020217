@@ -4,52 +4,46 @@ let mVec;
 let pMVec;
 
 function setup() {
-  setCanvasContainer('canvas', 1, 1, true);
-  mover = new Mover(width / 2, height / 2, 20);
-  gravity = createVector(0, 0.1);
+  setCanvasContainer('canvas', 3, 2, true);
+
+  mover = new Mover(width / 2, height / 2, 100);
+  gravity = createVector(0, 0.5);
+
   mVec = createVector();
   pMVec = createVector();
+
+  background(255);
 }
 
 function draw() {
-  background(255);
+  const force = p5.Vector.mult(gravity, mover.mass);
 
-  if (mover.isDragging) {
-    let mouseVec = createVector(mouseX, mouseY);
-    let dragForce = p5.Vector.sub(mouseVec, pMVec).mult(0.1);
-    mover.applyForce(dragForce);
-  }
-
-  let gravityForce = p5.Vector.mult(gravity, mover.mass);
-  mover.applyForce(gravityForce);
-
+  mover.applyForce(force);
   mover.update();
   mover.edgeBounce();
 
-  // Display the Mover
+  background(255);
+
   mover.display();
 }
 
-// ... Existing code ...
+function mouseMoved() {
+  mover.mouseMoved(mouseX, mouseY);
+}
+
+function mousePressed() {
+  mover.mousePressed(mouseX, mouseY);
+}
 
 function mouseDragged() {
-  pMVec.set(pmouseX, pmouseY);
-
-  // If dragging, update the position of the mover
-  if (mover.isDragging) {
-    mover.mouseDragged(mouseX, mouseY);
-  }
+  mover.mouseDragged(mouseX, mouseY);
 }
 
 function mouseReleased() {
+  mover.mouseReleased();
   pMVec.set(pmouseX, pmouseY);
   mVec.set(mouseX, mouseY);
-
-  // If dragging, release the mover
-  if (mover.isDragging) {
-    // Calculate the throwing force based on mouse movement speed
-    let throwForce = p5.Vector.sub(mVec, pMVec).mult(0.1);
-    mover.applyThrowForce(throwForce);
-    mover.mouseReleased();
-  }
+  const throwingForce = p5.Vector.sub(mVec, pMVec);
+  throwingForce.mult(15);
+  mover.applyForce(throwingForce);
 }

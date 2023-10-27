@@ -1,29 +1,30 @@
 class Mover {
   constructor(x, y, mass) {
     this.pos = createVector(x, y);
-    this.vel = createVector(0, 0);
-    this.acc = createVector(0, 0);
+    this.vel = createVector();
+    this.acc = createVector();
     this.mass = mass;
-    this.rad = this.mass * 5;
+    this.rad = this.mass ** (1 / 2) * 5;
     this.isHover = false;
     this.isDragging = false;
-    this.draggingOffset = createVector(0, 0);
+    this.draggingOffset = createVector();
   }
 
-  applyForce(externalForce) {
-    let f = externalForce.copy().div(this.mass);
-    this.acc.add(f);
+  applyForce(force) {
+    const acc = p5.Vector.div(force, this.mass);
+    this.acc.add(acc);
   }
 
   update() {
-    this.vel.add(this.acc);
-    this.pos.add(this.vel);
-    this.acc.set(0, 0);
-    this.edgeBounce();
+    if (!this.isDragging) {
+      this.vel.add(this.acc);
+      this.pos.add(this.vel);
+    }
+    this.acc.mult(0);
   }
 
   edgeBounce() {
-    let bounce = -0.7;
+    const bounce = -0.7;
     if (this.pos.x < 0 + this.rad) {
       this.pos.x = 0 + this.rad;
       this.vel.x *= bounce;
@@ -39,11 +40,17 @@ class Mover {
 
   display() {
     noStroke();
-    fill(0);
+    if (this.isDragging) {
+      fill('blue');
+    } else if (this.isHover) {
+      fill('red');
+    } else {
+      fill(0);
+    }
     ellipse(this.pos.x, this.pos.y, 2 * this.rad);
   }
 
-  checkHover(mX, mY) {
+  mouseMoved(mX, mY) {
     this.isHover =
       (this.pos.x - mX) ** 2 + (this.pos.y - mY) ** 2 <= this.rad ** 2;
   }
@@ -51,23 +58,18 @@ class Mover {
   mousePressed(mX, mY) {
     if (this.isHover) {
       this.isDragging = true;
-      this.draggingOffset.x = this.pos.x - mX;
-      this.draggingOffset.y = this.pos.y - mY;
+      this.vel.mult(0);
+      this.draggingOffset.set(mX - this.pos.x, mY - this.pos.y);
     }
   }
 
   mouseDragged(mX, mY) {
     if (this.isDragging) {
-      this.pos.x = mX + this.draggingOffset.x;
-      this.pos.y = mY + this.draggingOffset.y;
+      this.pos.set(mX - this.draggingOffset.x, mY - this.draggingOffset.y);
     }
   }
 
   mouseReleased() {
     this.isDragging = false;
-  }
-
-  applyThrowForce(throwForce) {
-    this.acc.add(throwForce);
   }
 }

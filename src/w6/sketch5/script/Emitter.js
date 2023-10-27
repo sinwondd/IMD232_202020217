@@ -1,29 +1,37 @@
 class Emitter {
   constructor(x, y) {
-    this.origin = createVector(x, y);
+    this.pos = createVector(x, y);
     this.particles = [];
   }
 
   addParticle() {
-    let r = random(1);
-    if (r < 0.5) {
-      this.particles.push(new Particle(this.origin.x, this.origin.y));
-    } else {
-      this.particles.push(new Confetti(this.origin.x, this.origin.y));
+    const randomLoc = p5.Vector.random2D();
+    randomLoc.mult(random(0.5, 2));
+    randomLoc.add(this.pos);
+    this.particles.push(
+      new Particle(randomLoc.x, randomLoc.y, 1, 15, random(120, 720))
+    );
+  }
+
+  applyForce(force) {
+    this.particles.forEach((eachParticle) => {
+      eachParticle.applyForce(force);
+    });
+  }
+
+  update() {
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const eachParticle = this.particles[i];
+      eachParticle.update();
+      if (eachParticle.isDead()) {
+        this.particles.splice(i, 1);
+      }
     }
   }
 
-  run() {
-    // for (let i = this.particles.length - 1; i >= 0; i--) {
-    //   this.particles[i].run();
-    //   if (this.particles[i].isDead()) {
-    //     this.particles.splice(i, 1);
-    //   }
-    // }
-
-    this.particles = this.particles.filter((particle) => !particle.isDead());
+  display() {
     this.particles.forEach((eachParticle) => {
-      eachParticle.run();
+      eachParticle.display();
     });
   }
 }
