@@ -12,8 +12,6 @@ function setup() {
 function draw() {
   background(255);
 
-  // ellipse(width / 2 + random(100, 200), height / 2, 50);
-  // ellipse(width / 2 + random() * 100 + 100, height / 2 + 100, 50);
   ellipse(width / 2 + noise(noiseXA) * 100 + 100, height / 2, 50);
   ellipse(width / 2 + noise(noiseXB) * 100 + 100, height / 2 + 100, 50);
   noiseXA += noiseXAVel;

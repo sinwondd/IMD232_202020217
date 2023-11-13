@@ -1,7 +1,7 @@
 class Vehicle {
   constructor(x, y, mass, rad, speedMx, forceMx, color) {
     this.pos = createVector(x, y);
-    // "pos"라는 p5.js의 createVector 함수를 사용하여 2D 위치 벡터를 초기화하고, 현재 위치로 설정.
+    // createVector 함수를 사용하여 2D 위치 벡터를 초기화하고, 현재 위치로 설정.
     this.vel = p5.Vector.random2D();
     // "vel"이라는 속도 벡터를 무작위 방향으로 초기화.
     this.acc = createVector();
@@ -15,7 +15,7 @@ class Vehicle {
     this.forceMx = forceMx;
     // 변수를 설정
     this.neighborhooodRad = 50;
-    // 반경을 나타내는 "neighborhoodRad" 변수를 설정
+    // s반경을 나타내는 "neighborhoodRad" 변수를 설정
     this.color = color;
   }
 
