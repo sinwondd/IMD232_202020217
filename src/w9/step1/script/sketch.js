@@ -14,7 +14,6 @@ const {
   Bodies,
 } = Matter;
 
-// Import poly-decomp library
 const decomp = require('poly-decomp');
 
 Common.setDecomp(decomp);
@@ -30,15 +29,12 @@ const oHeight = 600;
 let mouse;
 let mouseConstraint;
 
-// Group for collision filtering
 let group;
 
-// Function to set up the canvas
 function setup() {
   setCanvasContainer('canvas', oWidth, oHeight, true);
   background('white');
 
-  // Create the first chain with circles
   let ropeA = Composites.stack(100, 50, 8, 1, 10, 10, function (x, y) {
     return Bodies.circle(x, y, 20, {
       collisionFilter: { group: group },
@@ -62,7 +58,6 @@ function setup() {
 
   group = Body.nextGroup(true);
 
-  // Create the second chain with circles
   let ropeB = Composites.stack(350, 50, 10, 1, 10, 10, function (x, y) {
     return Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
   });
@@ -84,7 +79,6 @@ function setup() {
 
   group = Body.nextGroup(true);
 
-  // Create the third chain with a concave shape (rectangle)
   let ropeC = Composites.stack(600, 50, 13, 1, 10, 10, function (x, y) {
     return Bodies.rectangle(x - 20, y, 50, 20, {
       collisionFilter: { group: group },
@@ -103,7 +97,6 @@ function setup() {
     })
   );
 
-  // Create mouse and mouse constraint
   mouse = Mouse.create(document.querySelector('.p5Canvas'));
   mouse.pixelRatio = pixelDensity();
   mouseConstraint = MouseConstraint.create(engine, {
@@ -116,28 +109,23 @@ function setup() {
   Runner.run(runner, engine);
 }
 
-// Function to draw the animation
 function draw() {
   mouse.pixelRatio = (pixelDensity() * width) / oWidth;
   background('white');
   Engine.update(engine);
 
-  // Draw the first chain (ropeA)
   drawChain(ropeA);
 
-  // Draw the second chain (ropeB)
   drawChain(ropeB);
 
-  // Draw the third chain (ropeC)
   drawChain(ropeC);
 }
 
-// Function to draw a chain
 function drawChain(chain) {
   beginShape();
   for (let i = 0; i < chain.bodies.length; i++) {
     const body = chain.bodies[i];
-    const vertices = body.parts[0].vertices; // Use the vertices of the first part
+    const vertices = body.parts[0].vertices;
 
     for (let j = 0; j < vertices.length; j++) {
       vertex(vertices[j].x, vertices[j].y);
