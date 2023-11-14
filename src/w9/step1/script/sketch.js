@@ -2,9 +2,9 @@ const {
   Engine,
   Render,
   Runner,
-  Body,
   Constraint,
   MouseConstraint,
+  Body,
   Mouse,
   Vertices,
   Svg,
@@ -12,9 +12,12 @@ const {
   Composites,
   Common,
   Bodies,
-} = matter;
+} = Matter;
 
-Common.setDecomp(decomp),
+// Import poly-decomp library
+const decomp = require('poly-decomp');
+
+Common.setDecomp(decomp);
 
 const engine = Engine.create(),
   world = engine.world;
@@ -27,139 +30,118 @@ const oHeight = 600;
 let mouse;
 let mouseConstraint;
 
-const walls = [];
-let stack;
+// Group for collision filtering
+let group;
 
+// Function to set up the canvas
 function setup() {
   setCanvasContainer('canvas', oWidth, oHeight, true);
   background('white');
 
+  // Create the first chain with circles
+  let ropeA = Composites.stack(100, 50, 8, 1, 10, 10, function (x, y) {
+    return Bodies.circle(x, y, 20, {
+      collisionFilter: { group: group },
+    });
+  });
 
-  walls.push(Bodies.rectangle(400, 0, 800, 50, { isStatic: true }));
-  walls.push(Bodies.rectangle(400, 600, 800, 50, { isStatic: true }));
-  walls.push(Bodies.rectangle(800, 300, 50, 600, { isStatic: true }));
-  walls.push(Bodies.rectangle(0, 300, 50, 600, { isStatic: true }));
-  Composite.add(world, walls);
+  Composites.chain(ropeA, 0.5, 0, -0.5, 0, {
+    stiffness: 0.8,
+    length: 2,
+    render: { type: 'line' },
+  });
+  Composite.add(
+    ropeA,
+    Constraint.create({
+      bodyB: ropeA.bodies[0],
+      pointB: { x: -25, y: 0 },
+      pointA: { x: ropeA.bodies[0].position.x, y: ropeA.bodies[0].position.y },
+      stiffness: 0.5,
+    })
+  );
 
+  group = Body.nextGroup(true);
 
+  // Create the second chain with circles
+  let ropeB = Composites.stack(350, 50, 10, 1, 10, 10, function (x, y) {
+    return Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
+  });
 
+  Composites.chain(ropeB, 0.5, 0, -0.5, 0, {
+    stiffness: 0.8,
+    length: 2,
+    render: { type: 'line' },
+  });
+  Composite.add(
+    ropeB,
+    Constraint.create({
+      bodyB: ropeB.bodies[0],
+      pointB: { x: -20, y: 0 },
+      pointA: { x: ropeB.bodies[0].position.x, y: ropeB.bodies[0].position.y },
+      stiffness: 0.5,
+    })
+  );
 
+  group = Body.nextGroup(true);
 
+  // Create the third chain with a concave shape (rectangle)
+  let ropeC = Composites.stack(600, 50, 13, 1, 10, 10, function (x, y) {
+    return Bodies.rectangle(x - 20, y, 50, 20, {
+      collisionFilter: { group: group },
+      chamfer: 5,
+    });
+  });
 
+  Composites.chain(ropeC, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
+  Composite.add(
+    ropeC,
+    Constraint.create({
+      bodyB: ropeC.bodies[0],
+      pointB: { x: -20, y: 0 },
+      pointA: { x: ropeC.bodies[0].position.x, y: ropeC.bodies[0].position.y },
+      stiffness: 0.5,
+    })
+  );
+
+  // Create mouse and mouse constraint
   mouse = Mouse.create(document.querySelector('.p5Canvas'));
-  m.pixelRatio = pixelDensity();
-  mouseConstraint = MouseConstraint.create(matterEngine, {
-    mouse: m,
-    constraint: { stiffness: 1 },
-  });
-  Composite.add(matterEngine.world, matterConstraint);
-
-  Runner.run(eddRunner, eddEngine);
-}
-
-
-
-function draw() {
-  background('white');
-  // add bodies
-let group = Body.nextGroup(true);
-
-let ropeA = Composites.stack(100, 50, 8, 1, 10, 10, function (x, y) {
-  return Bodies.rectangle(x, y, 50, 20, {
-    collisionFilter: { group: group },
-  });
-});
-
-Composites.chain(ropeA, 0.5, 0, -0.5, 0, {
-  stiffness: 0.8,
-  length: 2,
-  render: { type: 'line' },
-});
-Composite.add(
-  ropeA,
-  Constraint.create({
-    bodyB: ropeA.bodies[0],
-    pointB: { x: -25, y: 0 },
-    pointA: { x: ropeA.bodies[0].position.x, y: ropeA.bodies[0].position.y },
-    stiffness: 0.5,
-  })
-);
-
-group = Body.nextGroup(true);
-
-let ropeB = Composites.stack(350, 50, 10, 1, 10, 10, function (x, y) {
-  return Bodies.circle(x, y, 20, { collisionFilter: { group: group } });
-});
-
-Composites.chain(ropeB, 0.5, 0, -0.5, 0, {
-  stiffness: 0.8,
-  length: 2,
-  render: { type: 'line' },
-});
-Composite.add(
-  ropeB,
-  Constraint.create({
-    bodyB: ropeB.bodies[0],
-    pointB: { x: -20, y: 0 },
-    pointA: { x: ropeB.bodies[0].position.x, y: ropeB.bodies[0].position.y },
-    stiffness: 0.5,
-  })
-);
-
-group = Body.nextGroup(true);
-
-let ropeC = Composites.stack(600, 50, 13, 1, 10, 10, function (x, y) {
-  return Bodies.rectangle(x - 20, y, 50, 20, {
-    collisionFilter: { group: group },
-    chamfer: 5,
-  });
-});
-
-Composites.chain(ropeC, 0.3, 0, -0.3, 0, { stiffness: 1, length: 0 });
-Composite.add(
-  ropeC,
-  Constraint.create({
-    bodyB: ropeC.bodies[0],
-    pointB: { x: -20, y: 0 },
-    pointA: { x: ropeC.bodies[0].position.x, y: ropeC.bodies[0].position.y },
-    stiffness: 0.5,
-  })
-);
-
-Composite.add(world, [
-  ropeA,
-  ropeB,
-  ropeC,
-  Bodies.rectangle(400, 600, 1200, 50.5, { isStatic: true }),
-]);
-
-}
-
-// create runner
-let runner = Runner.create();
-Runner.run(runner, engine);
-
-
-// add mouse control
-let mouse = Mouse.create(render.canvas),
+  mouse.pixelRatio = pixelDensity();
   mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
-    constraint: {
-      stiffness: 0.2,
-      render: {
-        visible: false,
-      },
-    },
+    constraint: { stiffness: 1 },
   });
+  Composite.add(world, mouseConstraint);
 
-Composite.add(world, mouseConstraint);
+  background('white');
+  Runner.run(runner, engine);
+}
 
-// keep the mouse in sync with rendering
-render.mouse = mouse;
+// Function to draw the animation
+function draw() {
+  mouse.pixelRatio = (pixelDensity() * width) / oWidth;
+  background('white');
+  Engine.update(engine);
 
-// fit the render viewport to the scene
-Render.lookAt(render, {
-  min: { x: 0, y: 0 },
-  max: { x: 700, y: 600 },
-});
+  // Draw the first chain (ropeA)
+  drawChain(ropeA);
 
+  // Draw the second chain (ropeB)
+  drawChain(ropeB);
+
+  // Draw the third chain (ropeC)
+  drawChain(ropeC);
+}
+
+// Function to draw a chain
+function drawChain(chain) {
+  beginShape();
+  for (let i = 0; i < chain.bodies.length; i++) {
+    const body = chain.bodies[i];
+    const vertices = body.parts[0].vertices; // Use the vertices of the first part
+
+    for (let j = 0; j < vertices.length; j++) {
+      vertex(vertices[j].x, vertices[j].y);
+    }
+  }
+  endShape(CLOSE);
+}
