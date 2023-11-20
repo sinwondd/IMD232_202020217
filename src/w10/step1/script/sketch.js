@@ -1,6 +1,6 @@
 const tiles = [];
-const rowNum = 50,
-  colNum = 50;
+const rowNum = 200,
+  colNum = 200;
 function setup() {
   setCanvasContainer('canvas', 1, 1, true);
 
