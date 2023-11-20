@@ -30,7 +30,14 @@ const oHeight = 600;
 let mouse;
 let mouseConstraint;
 
-// Group for collision filtering
+mouse = Mouse.create(document.querySelector('.p5Canvas'));
+mouse.pixelRatio = pixelDensity();
+mouseConstraint = MouseConstraint.create(engine, {
+  mouse: mouse,
+  constraint: { stiffness: 1 },
+});
+Composite.add(world, mouseConstraint);
+
 let group;
 
 // Function to set up the canvas
